@@ -73,7 +73,7 @@ class PaymentController extends \yii\web\Controller
         $result = $merchant->checkStatus($orderId);
         //Проверяем статус оплаты если всё хорошо обновим инвойс и редерекним
         if (isset($result['OrderStatus']) && ($result['OrderStatus'] != $merchant->successStatus)) {
-            //обработка при успешной оплате $model->related_id номер заказа
+            //обработка при успешной оплате $model->orderNumber номер заказа в вашей системе
             echo 'ok';
         } else {
             $this->redirect($merchant->failUrl.'?orderId=' . $orderId);
@@ -87,7 +87,7 @@ class PaymentController extends \yii\web\Controller
         if (is_null($model)) {
             throw new NotFoundHttpException();
         }
-        //вывод страницы ошибки $model->related_id номер заказа
+        //вывод страницы ошибки $model->orderNumber номер заказа в вашей системе
 
         echo 'error payment';
     }
