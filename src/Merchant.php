@@ -79,14 +79,14 @@ class Merchant extends BaseObject
     {
         $relatedModel = $this->getRelatedModel();
 
-        $invoice = AlfapayInvoice::findOne(['related_id' => $orderID, 'related_model' => $relatedModel]);
+        $invoice = AlfapayInvoice::findOne(['related_id' => $orderID . '-' . $relatedModel, 'related_model' => $relatedModel]);
 
         if ($invoice) {
             return Yii::$app->response->redirect($invoice->url);
         }
 
         $data = [
-            'orderNumber' => $orderID,
+            'orderNumber' => $orderID . '-' . $relatedModel,
             'amount' => $sum * 100,
             'returnUrl' => Url::to($this->returnUrl, true),
             'failUrl' => Url::to($this->failUrl, true),
@@ -106,7 +106,7 @@ class Merchant extends BaseObject
         $orderId = $response['orderId'];
         $formUrl = $response['formUrl'];
 
-        AlfapayInvoice::addSberbank($orderID, $this->relatedModel, $orderId, $formUrl, $data);
+        AlfapayInvoice::addAlfabank($orderID, $this->relatedModel, $orderId, $formUrl, $data);
 
         return Yii::$app->response->redirect($formUrl);
     }
